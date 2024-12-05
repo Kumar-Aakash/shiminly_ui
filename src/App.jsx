@@ -24,7 +24,7 @@ const App = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/generate-flashcards",
+        "https://ai-gamified-api-82go.onrender.com/generate-flashcards",
         {
           method: "POST",
           headers: {
