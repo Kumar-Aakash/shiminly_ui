@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import FileUpload from "./FileUpload";
 import FlashcardViewer from "./FlashcardViewer";
 import FlashcardTable from "./FlashcardTable";
+import ProfileSelector from "./ProfileSelector";
+import FlashcardList from "./FlashcardList";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,16 +11,30 @@ const App = () => {
   const [acceptedFlashcards, setAcceptedFlashcards] = useState([]);
   const [showTable, setShowTable] = useState(false);
   const [reviewCompleted, setReviewCompleted] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState("Teacher");
 
   const classes = ["Class A", "Class B", "Class C"];
+  const profiles = ["Teacher", ...classes];
+
+  // Single source of truth for assignments and classifications
+  const [flashcardData, setFlashcardData] = useState(() => {
+    const stored = JSON.parse(localStorage.getItem("flashcardData")) || {};
+    return stored;
+  });
 
   useEffect(() => {
-    const storedFlashcards = JSON.parse(localStorage.getItem("acceptedFlashcards")) || [];
+    const storedFlashcards =
+      JSON.parse(localStorage.getItem("acceptedFlashcards")) || [];
     setAcceptedFlashcards(storedFlashcards);
     if (storedFlashcards.length > 0) {
       setShowTable(true);
     }
   }, []);
+
+  const saveFlashcardData = (updatedData) => {
+    setFlashcardData(updatedData);
+    localStorage.setItem("flashcardData", JSON.stringify(updatedData));
+  };
 
   const handleGenerateFlashcards = async (text, numFlashcards) => {
     setIsLoading(true);
@@ -39,7 +55,6 @@ const App = () => {
         setFlashcards(data.flashcards);
         setReviewCompleted(false);
       }
-
     } catch (error) {
       alert("Error calling API.");
       console.error(error);
@@ -53,7 +68,17 @@ const App = () => {
       setAcceptedFlashcards((prev) => {
         const updated = [...prev, flashcard];
         localStorage.setItem("acceptedFlashcards", JSON.stringify(updated));
-        console.log("Accepted Flashcards:", updated);
+
+        // Initialize flashcardData entry if not present
+        const newData = { ...flashcardData };
+        if (!newData[flashcard.heading]) {
+          newData[flashcard.heading] = {
+            assignedClasses: [],
+            classification: {}
+          };
+        }
+        saveFlashcardData(newData);
+
         return updated;
       });
       alert("Flashcard accepted and saved!");
@@ -65,41 +90,77 @@ const App = () => {
 
   const handleReviewCompleted = () => {
     setReviewCompleted(true);
-    setShowTable(true); // Show the table immediately after review is completed
-  };
-
-  const handleViewTable = () => {
-    console.log("Viewing Saved Flashcards:", acceptedFlashcards);
     setShowTable(true);
   };
 
+  const handleViewTable = () => {
+    setShowTable(true);
+  };
+
+  // Filter flashcards for non-teacher profiles based on assigned classes
+  const getFilteredFlashcards = () => {
+    if (selectedProfile === "Teacher") return acceptedFlashcards;
+
+    // Check in flashcardData to see if the flashcard is assigned to this profile (class)
+    return acceptedFlashcards.filter((flashcard) => {
+      const data = flashcardData[flashcard.heading];
+      return data && data.assignedClasses && data.assignedClasses.includes(selectedProfile);
+    });
+  };
+
+  const filteredFlashcards = getFilteredFlashcards();
+
   return (
     <div className="bg-gray-50 min-h-screen p-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Flashcard Generator</h1>
-
-      <FileUpload onGenerateFlashcards={handleGenerateFlashcards} isLoading={isLoading} />
-
-      {!reviewCompleted && flashcards.length > 0 && (
-        <FlashcardViewer
-          flashcards={flashcards}
-          onFlashcardAction={handleFlashcardAction}
-          onReviewCompleted={handleReviewCompleted}
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Flashcard Generator</h1>
+        <ProfileSelector
+          profiles={profiles}
+          selectedProfile={selectedProfile}
+          onSelectProfile={setSelectedProfile}
         />
-      )}
+      </div>
 
+      {selectedProfile === "Teacher" ? (
+        <>
+          <FileUpload onGenerateFlashcards={handleGenerateFlashcards} isLoading={isLoading} />
 
-      {showTable && <FlashcardTable flashcards={acceptedFlashcards} classes={classes} />}
+          {!reviewCompleted && flashcards.length > 0 && (
+            <FlashcardViewer
+              flashcards={flashcards}
+              onFlashcardAction={handleFlashcardAction}
+              onReviewCompleted={handleReviewCompleted}
+            />
+          )}
 
+          {showTable && (
+            <FlashcardTable
+              flashcards={acceptedFlashcards}
+              classes={classes}
+              isTeacher={true}
+              flashcardData={flashcardData}
+              onUpdateFlashcardData={saveFlashcardData}
+            />
+          )}
 
-      {acceptedFlashcards.length > 0 && !showTable && (
-        <div className="text-center mt-8">
-          <button
-            onClick={handleViewTable}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-          >
-            View Accepted Flashcards
-          </button>
-        </div>
+          {acceptedFlashcards.length > 0 && !showTable && (
+            <div className="text-center mt-8">
+              <button
+                onClick={handleViewTable}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              >
+                View Accepted Flashcards
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <FlashcardList
+          flashcards={filteredFlashcards}
+          selectedProfile={selectedProfile}
+          flashcardData={flashcardData}
+          onUpdateFlashcardData={saveFlashcardData}
+        />
       )}
     </div>
   );
