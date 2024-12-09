@@ -137,9 +137,9 @@ const FlashCards = () => {
 
   const filteredFlashcards = getFilteredFlashcards();
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen p-6">
+    <div className="min-h-screen p-6">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
-        <h1 className="text-4xl font-extrabold text-gray-800 mb-4 sm:mb-0">
+        <h1 className="text-lg font-medium text-[#071434] mb-4 sm:mb-0">
           Flashcard Generator
         </h1>
         <div className="w-full sm:w-auto">

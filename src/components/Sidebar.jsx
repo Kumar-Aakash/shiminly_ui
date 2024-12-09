@@ -4,7 +4,7 @@ import { FaHome, FaIdCard, FaCog } from "react-icons/fa"; // Dummy icons
 
 const Sidebar = () => {
   return (
-    <aside className="text-white w-64 min-h-screen shadow-xl">
+    <aside className="text-white bg-light  w-64 min-h-screen border border-gray-100">
       <div className="p-5 flex items-center justify-center">
         <img
           src="https://shiminly.com/wp-content/uploads/2024/04/Shiminly_Full-Color-1024x252.png"
