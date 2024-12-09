@@ -139,7 +139,7 @@ const FlashCards = () => {
   return (
     <div className="min-h-screen p-6">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
-        <h1 className="text-lg font-medium text-[#071434] mb-4 sm:mb-0">
+        <h1 className="text-lg font-medium text-[#071434] mb-4 ml-6 sm:mb-0">
           Flashcard Generator
         </h1>
         <div className="w-full sm:w-auto">
@@ -151,13 +151,13 @@ const FlashCards = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="bg-white rounded-lg px-6 pb-6">
         {selectedProfile === "Teacher" ? (
           <>
             <>
               <div className="flex flex-col sm:flex-row gap-6">
                 {/* FileUpload Section */}
-                <div className="sm:w-1/2 bg-white p-6 rounded-lg shadow-lg">
+                <div className="sm:w-1/2 bg-white h-[400px] p-6 rounded-lg border border-gray-200 shadow-sm">
                   <FileUpload
                     onGenerateFlashcards={handleGenerateFlashcards}
                     isLoading={isLoading}
@@ -166,7 +166,7 @@ const FlashCards = () => {
 
                 {/* FlashcardViewer Section */}
                 {!reviewCompleted && flashcards.length > 0 && (
-                  <div className="sm:w-1/2 bg-white p-6 rounded-lg shadow-lg">
+                  <div className="sm:w-1/2 px-auto -mt-16 flex align-center align-middle justify-center bg-white p-6 rounded-lg">
                     <FlashcardViewer
                       flashcards={flashcards}
                       onFlashcardAction={handleFlashcardAction}
