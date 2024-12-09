@@ -23,22 +23,32 @@ const FlashcardViewer = ({ flashcards, onFlashcardAction, onReviewCompleted }) =
 
   return (
     flashcard && (
-      <div className="bg-white p-6 shadow-md rounded-md mt-[60px]">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">{flashcard.heading}</h2>
-        <p className="text-gray-600 mb-6">{flashcard.description}</p>
-        <div className="flex justify-between">
-          <button
-            onClick={handleAccept}
-            className="bg-green-500 text-white px-4 py-2 rounded"
-          >
-            Accept
-          </button>
-          <button
-            onClick={handleReject}
-            className="bg-red-500 text-white px-4 py-2 rounded"
-          >
-            Reject
-          </button>
+      <div className="mx-auto mt-10 bg-white rounded-lg shadow-xl transform transition-all duration-500 hover:scale-105">
+        {/* Flashcard Header */}
+        <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-lg p-6">
+          <h2 className="text-2xl font-bold text-white text-center mb-2">{flashcard.heading}</h2>
+          <p className="text-white text-sm text-center">{flashcard.subheading || "Expand your knowledge!"}</p>
+        </div>
+
+        {/* Flashcard Content */}
+        <div className="p-6">
+          <p className="text-gray-700 text-center text-lg leading-relaxed mb-6">{flashcard.description}</p>
+
+          {/* Action Buttons */}
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={handleAccept}
+              className="bg-green-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-600 shadow-lg transform transition-transform hover:-translate-y-1"
+            >
+              Accept
+            </button>
+            <button
+              onClick={handleReject}
+              className="bg-red-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-600 shadow-lg transform transition-transform hover:-translate-y-1"
+            >
+              Reject
+            </button>
+          </div>
         </div>
       </div>
     )

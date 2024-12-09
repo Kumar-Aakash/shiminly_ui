@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import FileUpload from "./FileUpload";
 import FlashcardViewer from "./FlashcardViewer";
 import FlashcardTable from "./FlashcardTable";
+import Layout from './components/Layout';
+import Dashboard from "./pages/Dashboard";
+import SplashCards from "./pages/SplashCards";
+import { Route, Router, Routes } from "react-router-dom";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,7 +17,8 @@ const App = () => {
   const classes = ["Class A", "Class B", "Class C"];
 
   useEffect(() => {
-    const storedFlashcards = JSON.parse(localStorage.getItem("acceptedFlashcards")) || [];
+    const storedFlashcards =
+      JSON.parse(localStorage.getItem("acceptedFlashcards")) || [];
     setAcceptedFlashcards(storedFlashcards);
     if (storedFlashcards.length > 0) {
       setShowTable(true);
@@ -30,7 +35,10 @@ const App = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ content: text, num_flashcards: numFlashcards }),
+          body: JSON.stringify({
+            content: text,
+            num_flashcards: numFlashcards,
+          }),
         }
       );
 
@@ -39,7 +47,6 @@ const App = () => {
         setFlashcards(data.flashcards);
         setReviewCompleted(false);
       }
-
     } catch (error) {
       alert("Error calling API.");
       console.error(error);
@@ -74,34 +81,38 @@ const App = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Flashcard Generator</h1>
+    // <div className="bg-gray-50 min-h-screen p-8">
+    //   <h1 className="text-3xl font-bold text-center mb-8">Flashcard Generator</h1>
 
-      <FileUpload onGenerateFlashcards={handleGenerateFlashcards} isLoading={isLoading} />
+    //   <FileUpload onGenerateFlashcards={handleGenerateFlashcards} isLoading={isLoading} />
 
-      {!reviewCompleted && flashcards.length > 0 && (
-        <FlashcardViewer
-          flashcards={flashcards}
-          onFlashcardAction={handleFlashcardAction}
-          onReviewCompleted={handleReviewCompleted}
-        />
-      )}
+    //   {!reviewCompleted && flashcards.length > 0 && (
+    //     <FlashcardViewer
+    //       flashcards={flashcards}
+    //       onFlashcardAction={handleFlashcardAction}
+    //       onReviewCompleted={handleReviewCompleted}
+    //     />
+    //   )}
 
+    //   {showTable && <FlashcardTable flashcards={acceptedFlashcards} classes={classes} />}
 
-      {showTable && <FlashcardTable flashcards={acceptedFlashcards} classes={classes} />}
-
-
-      {acceptedFlashcards.length > 0 && !showTable && (
-        <div className="text-center mt-8">
-          <button
-            onClick={handleViewTable}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-          >
-            View Accepted Flashcards
-          </button>
-        </div>
-      )}
-    </div>
+    //   {acceptedFlashcards.length > 0 && !showTable && (
+    //     <div className="text-center mt-8">
+    //       <button
+    //         onClick={handleViewTable}
+    //         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+    //       >
+    //         View Accepted Flashcards
+    //       </button>
+    //     </div>
+    //   )}
+    // </div>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/splash-cards" element={<SplashCards />} />
+        </Routes>
+      </Layout>
   );
 };
 
