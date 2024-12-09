@@ -29,7 +29,7 @@ const FlashcardTable = ({ flashcards, classes, isTeacher, flashcardData, onUpdat
           </tr>
         </thead>
         <tbody>
-          {flashcards?.map((flashcard) => {
+          {flashcards?.map((flashcard,index) => {
             const data = flashcardData?.[flashcard?.heading] || { assignedClasses: [], classification: {} };
             return (
               <tr key={flashcard?.heading} className="hover:bg-gray-50">

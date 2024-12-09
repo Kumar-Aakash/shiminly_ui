@@ -5,6 +5,8 @@ import FlashcardTable from "../FlashcardTable";
 import ProfileSelector from "../ProfileSelector";
 import FlashcardList from "../FlashcardList";
 import toast from "react-hot-toast";
+import { useParams } from 'react-router-dom';
+
 
 const FlashCards = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,6 +15,13 @@ const FlashCards = () => {
   const [showTable, setShowTable] = useState(false);
   const [reviewCompleted, setReviewCompleted] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState("Teacher");
+
+  const { profile } = useParams();
+
+  useEffect(()=>{
+    setSelectedProfile(profile)    
+  },[profile])
+
 
   const classes = ["Class A", "Class B", "Class C"];
   const profiles = ["Teacher", ...classes];
@@ -101,7 +110,7 @@ const FlashCards = () => {
       });
     }
     if (action === "reject") {
-      toast.success("Flashcard accepted and saved!", {
+      toast.error("Flashcard Rejected!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -136,19 +145,21 @@ const FlashCards = () => {
   };
 
   const filteredFlashcards = getFilteredFlashcards();
+
+
   return (
     <div className="min-h-screen p-6">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
         <h1 className="text-lg font-medium text-[#071434] mb-4 ml-6 sm:mb-0">
           Flashcard Generator
         </h1>
-        <div className="w-full sm:w-auto">
+        {/* <div className="w-full sm:w-auto">
           <ProfileSelector
             profiles={profiles}
             selectedProfile={selectedProfile}
             onSelectProfile={setSelectedProfile}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="bg-white rounded-lg px-6 pb-6">

@@ -31,8 +31,8 @@ const FlashcardList = ({ flashcards, selectedProfile, flashcardData, onUpdateFla
       <div>
         <h2 className="text-2xl font-bold mb-4">New Flash Cards</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {newFlashcards.map((flashcard) => (
-            <div key={flashcard.heading} className="bg-white shadow-md rounded-md p-4">
+          {newFlashcards.map((flashcard,index) => (
+            <div key={`${flashcard}-${index}`} className="bg-white shadow-md rounded-md p-4">
               <h2 className="text-xl font-bold mb-2">{flashcard.heading}</h2>
               <p className="text-gray-700">{flashcard.description}</p>
               <select
@@ -52,8 +52,8 @@ const FlashcardList = ({ flashcards, selectedProfile, flashcardData, onUpdateFla
       <div>
         <h2 className="text-2xl font-bold mb-4">Important</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {importantFlashcards.map((flashcard) => (
-            <div key={flashcard.heading} className="bg-white shadow-md rounded-md p-4">
+          {importantFlashcards.map((flashcard,index) => (
+            <div key={`${flashcard}-${index}`} className="bg-white shadow-md rounded-md p-4">
               <h2 className="text-xl font-bold mb-2">{flashcard.heading}</h2>
               <p className="text-gray-700">{flashcard.description}</p>
               <select
@@ -81,8 +81,8 @@ const FlashcardList = ({ flashcards, selectedProfile, flashcardData, onUpdateFla
             </tr>
           </thead>
           <tbody>
-            {reviewedFlashcards.map((flashcard) => (
-              <tr key={flashcard.heading} className="hover:bg-gray-50">
+            {reviewedFlashcards.map((flashcard,index) => (
+              <tr key={`${flashcard}-${index}`} className="hover:bg-gray-50">
                 <td className="border px-4 py-2">{flashcard.heading}</td>
                 <td className="border px-4 py-2">{flashcard.description}</td>
                 <td className="border px-4 py-2">

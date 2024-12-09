@@ -8,7 +8,7 @@ const App = () => {
   return (
       <Layout>
         <Routes>
-          <Route path="/flash-cards" element={<FlashCards />} />
+          <Route path="/flash-cards/:profile" element={<FlashCards />} />
         </Routes>
       </Layout>
   );
