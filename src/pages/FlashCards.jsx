@@ -6,7 +6,6 @@ import ProfileSelector from "../ProfileSelector";
 import FlashcardList from "../FlashcardList";
 import toast from "react-hot-toast";
 
-
 const FlashCards = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [flashcards, setFlashcards] = useState([]);
