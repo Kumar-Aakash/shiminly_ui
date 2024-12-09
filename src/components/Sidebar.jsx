@@ -16,7 +16,7 @@ const Sidebar = () => {
         <ul className="space-y-4">
           <li>
             <NavLink
-              to="/flash-cards"
+              to="/flash-cards/Teacher"
               className="flex text-[#1b84FF] bg-[#F9F9F9] mx-2 items-center px-6 py-2 text-[14px] rounded-lg transition-all"
             >
               <FaIdCard className="mr-3 text-xl" />

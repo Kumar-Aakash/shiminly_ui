@@ -29,10 +29,10 @@ const FlashcardTable = ({ flashcards, classes, isTeacher, flashcardData, onUpdat
           </tr>
         </thead>
         <tbody>
-          {flashcards?.map((flashcard) => {
+          {flashcards?.map((flashcard,index) => {
             const data = flashcardData?.[flashcard?.heading] || { assignedClasses: [], classification: {} };
             return (
-              <tr key={flashcard?.heading} className="hover:bg-gray-50">
+              <tr key={`${flashcard?.heading}-${index}`} className="hover:bg-gray-50">
                 <td className="border px-4 py-2">{flashcard?.heading}</td>
                 <td className="border px-4 py-2 text-center">
                   <button
