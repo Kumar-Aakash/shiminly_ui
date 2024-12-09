@@ -30,7 +30,7 @@ const FlashcardTable = ({ flashcards, classes, isTeacher, flashcardData, onUpdat
         </thead>
         <tbody>
           {flashcards?.map((flashcard) => {
-            const data = flashcardData[flashcard.heading] || { assignedClasses: [], classification: {} };
+            const data = flashcardData?.[flashcard?.heading] || { assignedClasses: [], classification: {} };
             return (
               <tr key={flashcard?.heading} className="hover:bg-gray-50">
                 <td className="border px-4 py-2">{flashcard?.heading}</td>
@@ -46,7 +46,7 @@ const FlashcardTable = ({ flashcards, classes, isTeacher, flashcardData, onUpdat
                   <td className="border px-4 py-2">
                     <MultiSelect
                       options={classes}
-                      value={data.assignedClasses}
+                      value={data?.assignedClasses}
                       onChange={(selected) => handleAssignChange(flashcard?.heading, selected)}
                     />
                   </td>

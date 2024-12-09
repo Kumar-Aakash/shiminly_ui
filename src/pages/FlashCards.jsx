@@ -126,7 +126,7 @@ const FlashCards = () => {
 
     // Check in flashcardData to see if the flashcard is assigned to this profile (class)
     return acceptedFlashcards.filter((flashcard) => {
-      const data = flashcardData[flashcard.heading];
+      const data = flashcardData[flashcard?.heading];
       return (
         data &&
         data.assignedClasses &&
