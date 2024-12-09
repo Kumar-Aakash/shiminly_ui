@@ -30,9 +30,8 @@ const Header = () => {
             selectedProfile={selectedProfile}
             onSelectProfile={handleProfileSelect}
           />          
-          <span className="hidden sm:inline-block text-lg font-medium text-[#071437]">{selectedProfile}</span>
+          <span className="hidden -ml-3 sm:inline-block text-sm font-medium text-[#071437]">{selectedProfile}</span>
         </div>
-        
       </div>
     </header>
   );
