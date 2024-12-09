@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
+import Dropdown from './Dropdown'; // Import the Dropdown component
 
 const FlashcardList = ({ flashcards, selectedProfile, flashcardData, onUpdateFlashcardData }) => {
-
   const handleClassificationChange = (flashcardHeading, classification) => {
     const newData = { ...flashcardData };
     if (!newData[flashcardHeading]) {
@@ -14,64 +14,77 @@ const FlashcardList = ({ flashcards, selectedProfile, flashcardData, onUpdateFla
     onUpdateFlashcardData(newData);
   };
 
-  // Determine classification for a flashcard under current profile
   const getClassForFlashcard = (flashcard) => {
     const data = flashcardData[flashcard.heading];
-    if (!data || !data.classification) return "";
-    return data.classification[selectedProfile] || "";
+    if (!data || !data.classification) return '';
+    return data.classification[selectedProfile] || '';
   };
 
-  // Partition flashcards by classification
-  const newFlashcards = flashcards.filter(f => getClassForFlashcard(f) === "");
-  const importantFlashcards = flashcards.filter(f => getClassForFlashcard(f) === "Important");
-  const reviewedFlashcards = flashcards.filter(f => getClassForFlashcard(f) === "Reviewed");
+  const dropdownOptions = [
+    { value: 'Important', label: 'Important' },
+    { value: 'Reviewed', label: 'Reviewed' }
+  ];
+
+  const newFlashcards = flashcards.filter((f) => getClassForFlashcard(f) === '');
+  const importantFlashcards = flashcards.filter((f) => getClassForFlashcard(f) === 'Important');
+  const reviewedFlashcards = flashcards.filter((f) => getClassForFlashcard(f) === 'Reviewed');
 
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">New Flash Cards</h2>
+        <h2 className="text-lg font-medium text-[#071434]">New Flash Cards</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {newFlashcards.map((flashcard,index) => (
-            <div key={`${flashcard}-${index}`} className="bg-white shadow-md rounded-md p-4">
-              <h2 className="text-xl font-bold mb-2">{flashcard.heading}</h2>
-              <p className="text-gray-700">{flashcard.description}</p>
-              <select
-                value={getClassForFlashcard(flashcard)}
-                onChange={(e) => handleClassificationChange(flashcard.heading, e.target.value)}
-                className="mt-2 p-2 border rounded"
-              >
-                <option value="">Select Classification</option>
-                <option value="Important">Important</option>
-                <option value="Reviewed">Reviewed</option>
-              </select>
+          {newFlashcards.map((flashcard, index) => (
+            <div key={`${flashcard.heading}-${index}`} className="mx-auto mt-10 bg-white rounded-lg shadow-xl flex flex-col justify-between h-full">
+              <div>
+                <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-lg p-6">
+                  <h2 className="text-[16px] font-medium text-white text-center mb-2">{flashcard.heading}</h2>
+                  <p className="text-white text-[13px] text-center">{flashcard.subheading || 'Expand your knowledge!'}</p>
+                </div>
+                <div className="p-6 flex-grow">
+                  <p className="text-gray-700 text-center text-[13px] leading-relaxed mb-2">{flashcard.description}</p>
+                </div>
+              </div>
+              <div className="p-6 -mt-12">
+                <Dropdown
+                  value={getClassForFlashcard(flashcard)}
+                  onChange={(value) => handleClassificationChange(flashcard.heading, value)}
+                  options={dropdownOptions}
+                />
+              </div>
             </div>
           ))}
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">Important</h2>
+        <h2 className="text-lg font-medium text-[#071434] mt-[100px]">Important Cards</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {importantFlashcards.map((flashcard,index) => (
-            <div key={`${flashcard}-${index}`} className="bg-white shadow-md rounded-md p-4">
-              <h2 className="text-xl font-bold mb-2">{flashcard.heading}</h2>
-              <p className="text-gray-700">{flashcard.description}</p>
-              <select
-                value={getClassForFlashcard(flashcard)}
-                onChange={(e) => handleClassificationChange(flashcard.heading, e.target.value)}
-                className="mt-2 p-2 border rounded"
-              >
-                <option value="">Select Classification</option>
-                <option value="Important">Important</option>
-                <option value="Reviewed">Reviewed</option>
-              </select>
+          {importantFlashcards.map((flashcard, index) => (
+            <div key={`${flashcard.heading}-${index}`} className="mx-auto mt-10 bg-white rounded-lg shadow-xl flex flex-col justify-between h-full">
+              <div>
+                <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-lg p-6">
+                  <h2 className="text-[16px] font-medium text-white text-center mb-2">{flashcard.heading}</h2>
+                  <p className="text-white text-[13px] text-center">{flashcard.subheading || 'Expand your knowledge!'}</p>
+                </div>
+                <div className="p-6 flex-grow">
+                  <p className="text-gray-700 text-center text-[13px] leading-relaxed mb-2">{flashcard.description}</p>
+                </div>
+              </div>
+              <div className="pt-0 p-6 -mt-12">
+                <Dropdown
+                  value={getClassForFlashcard(flashcard)}
+                  onChange={(value) => handleClassificationChange(flashcard.heading, value)}
+                  options={dropdownOptions}
+                />
+              </div>
             </div>
           ))}
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">Reviewed</h2>
+        <h2 className="text-lg font-medium text-[#071434] mt-[100px]">Reviewed</h2>
         <table className="table-auto w-full border-collapse border border-gray-200">
           <thead>
             <tr className="bg-gray-100">
@@ -81,20 +94,16 @@ const FlashcardList = ({ flashcards, selectedProfile, flashcardData, onUpdateFla
             </tr>
           </thead>
           <tbody>
-            {reviewedFlashcards.map((flashcard,index) => (
-              <tr key={`${flashcard}-${index}`} className="hover:bg-gray-50">
+            {reviewedFlashcards.map((flashcard, index) => (
+              <tr key={`${flashcard.heading}-${index}`} className="hover:bg-gray-50">
                 <td className="border px-4 py-2">{flashcard.heading}</td>
                 <td className="border px-4 py-2">{flashcard.description}</td>
                 <td className="border px-4 py-2">
-                  <select
+                  <Dropdown
                     value={getClassForFlashcard(flashcard)}
-                    onChange={(e) => handleClassificationChange(flashcard.heading, e.target.value)}
-                    className="p-2 border rounded"
-                  >
-                    <option value="">Select Classification</option>
-                    <option value="Important">Important</option>
-                    <option value="Reviewed">Reviewed</option>
-                  </select>
+                    onChange={(value) => handleClassificationChange(flashcard.heading, value)}
+                    options={dropdownOptions}
+                  />
                 </td>
               </tr>
             ))}
