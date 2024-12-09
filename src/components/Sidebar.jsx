@@ -27,12 +27,12 @@ const Sidebar = () => {
           </li>
           <li>
             <NavLink
-              to="/splash-cards"
+              to="/flash-cards"
               className="flex items-center px-6 py-1 text-lg text-gray-300 hover:bg-gray-700 rounded-lg transition-all"
               activeClassName="bg-gray-700 text-blue-400"
             >
               <FaIdCard className="mr-3 text-xl" />
-              Splash Cards
+              Flash Cards
             </NavLink>
           </li>
           <li>

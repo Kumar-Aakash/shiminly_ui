@@ -4,7 +4,7 @@ import FlashcardViewer from "./FlashcardViewer";
 import FlashcardTable from "./FlashcardTable";
 import Layout from './components/Layout';
 import Dashboard from "./pages/Dashboard";
-import SplashCards from "./pages/SplashCards";
+import FlashCards from "./pages/FlashCards";
 import { Route, Router, Routes } from "react-router-dom";
 
 const App = () => {
@@ -13,8 +13,16 @@ const App = () => {
   const [acceptedFlashcards, setAcceptedFlashcards] = useState([]);
   const [showTable, setShowTable] = useState(false);
   const [reviewCompleted, setReviewCompleted] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState("Teacher");
 
   const classes = ["Class A", "Class B", "Class C"];
+  const profiles = ["Teacher", ...classes];
+
+  // Single source of truth for assignments and classifications
+  const [flashcardData, setFlashcardData] = useState(() => {
+    const stored = JSON.parse(localStorage.getItem("flashcardData")) || {};
+    return stored;
+  });
 
   useEffect(() => {
     const storedFlashcards =
@@ -24,6 +32,11 @@ const App = () => {
       setShowTable(true);
     }
   }, []);
+
+  const saveFlashcardData = (updatedData) => {
+    setFlashcardData(updatedData);
+    localStorage.setItem("flashcardData", JSON.stringify(updatedData));
+  };
 
   const handleGenerateFlashcards = async (text, numFlashcards) => {
     setIsLoading(true);
@@ -60,7 +73,17 @@ const App = () => {
       setAcceptedFlashcards((prev) => {
         const updated = [...prev, flashcard];
         localStorage.setItem("acceptedFlashcards", JSON.stringify(updated));
-        console.log("Accepted Flashcards:", updated);
+
+        // Initialize flashcardData entry if not present
+        const newData = { ...flashcardData };
+        if (!newData[flashcard.heading]) {
+          newData[flashcard.heading] = {
+            assignedClasses: [],
+            classification: {}
+          };
+        }
+        saveFlashcardData(newData);
+
         return updated;
       });
       alert("Flashcard accepted and saved!");
@@ -72,13 +95,25 @@ const App = () => {
 
   const handleReviewCompleted = () => {
     setReviewCompleted(true);
-    setShowTable(true); // Show the table immediately after review is completed
+    setShowTable(true);
   };
 
   const handleViewTable = () => {
-    console.log("Viewing Saved Flashcards:", acceptedFlashcards);
     setShowTable(true);
   };
+
+  // Filter flashcards for non-teacher profiles based on assigned classes
+  const getFilteredFlashcards = () => {
+    if (selectedProfile === "Teacher") return acceptedFlashcards;
+
+    // Check in flashcardData to see if the flashcard is assigned to this profile (class)
+    return acceptedFlashcards.filter((flashcard) => {
+      const data = flashcardData[flashcard.heading];
+      return data && data.assignedClasses && data.assignedClasses.includes(selectedProfile);
+    });
+  };
+
+  const filteredFlashcards = getFilteredFlashcards();
 
   return (
     // <div className="bg-gray-50 min-h-screen p-8">
@@ -110,7 +145,7 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/splash-cards" element={<SplashCards />} />
+          <Route path="/flash-cards" element={<FlashCards />} />
         </Routes>
       </Layout>
   );
