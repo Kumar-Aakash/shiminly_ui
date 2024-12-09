@@ -32,19 +32,19 @@ const FlashcardViewer = ({ flashcards, onFlashcardAction, onReviewCompleted }) =
 
         {/* Flashcard Content */}
         <div className="p-6">
-          <p className="text-gray-700 text-center text-lg leading-relaxed mb-6">{flashcard.description}</p>
+          <p className="text-gray-700 text-center text-sm leading-relaxed mb-6">{flashcard.description}</p>
 
           {/* Action Buttons */}
           <div className="flex justify-center gap-4">
             <button
               onClick={handleAccept}
-              className="bg-green-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-600 shadow-lg transform transition-transform hover:-translate-y-1"
+              className="bg-green-500 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-green-600 shadow-lg transform transition-transform hover:-translate-y-1"
             >
               Accept
             </button>
             <button
               onClick={handleReject}
-              className="bg-red-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-600 shadow-lg transform transition-transform hover:-translate-y-1"
+              className="bg-red-500 text-sm text-white px-6 py-2 rounded-lg font-medium hover:bg-red-600 shadow-lg transform transition-transform hover:-translate-y-1"
             >
               Reject
             </button>

@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
         <Header />
 
         {/* Main Content (scrollable) */}
-        <main className="flex-1 overflow-y-auto p-4 bg-gray-50">
+        <main className="flex-1 overflow-y-auto">
           {children}
         </main>
 
