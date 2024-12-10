@@ -6,7 +6,7 @@ const Modal = ({ flashcard, onClose }) => {
       <div className="bg-white rounded-lg shadow-xl transform transition-all duration-500 hover:scale-105 w-1/3 relative">
         <button
           onClick={onClose}
-          className="absolute cursor-pointer top-2 right-2 text-gray-500 hover:text-gray-700"
+          className="absolute cursor-pointer top-2 right-2 text-white "
         >
           ✕
         </button>

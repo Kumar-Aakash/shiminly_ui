@@ -1,8 +1,6 @@
 import React from "react";
 import Dropdown from "./Dropdown";
 import { useState } from "react";
-import { cn } from "./lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
 
 const FlashcardList = ({
   flashcards,
@@ -43,72 +41,40 @@ const FlashcardList = ({
     (f) => getClassForFlashcard(f) === "Reviewed"
   );
 
-  let [hoveredIndex, setHoveredIndex] = useState(null);
-  let [impCardHoverIndex, setImpCardHoverIndex] = useState(null);
-
   return (
     <div className="space-y-8">
       {newFlashcards.length > 0 && (
         <div>
-          <h2 className="text-lg font-medium text-[#071434]">
-            New Flash Cards
-          </h2>
-          <div
-            className={cn(
-              "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-10"
-            )}
-          >
+          <h2 className="text-lg font-medium text-[#071434]">New Flash Cards</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {newFlashcards.map((flashcard, index) => (
               <div
                 key={`${flashcard.heading}-${index}`}
-                className="mx-auto bg-white rounded-lg shadow-xl flex flex-col justify-between h-full w-full gap-3 mb-10"
+                className="mx-auto mt-10 bg-white rounded-lg shadow-xl transform transition-all duration-500 hover:scale-105 flex flex-col justify-between h-full w-full"
               >
-                <div
-                  className="card-section relative group  block p-2 h-full w-full cursor-pointer"
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
-                  <AnimatePresence>
-                    {hoveredIndex === index && (
-                      <motion.span
-                        className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.1] block  rounded-3xl"
-                        layoutId="hoverBackground"
-                        initial={{ opacity: 1 }}
-                        animate={{
-                          opacity: 1,
-                          transition: { duration: 0.15 },
-                        }}
-                        exit={{
-                          opacity: 0,
-                          transition: { duration: 0.15, delay: 0.2 },
-                        }}
-                      />
-                    )}
-                  </AnimatePresence>
-                  <div className="mb-5">
-                    <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-lg p-6">
-                      <h2 className="text-[16px] font-medium text-white text-center mb-2">
-                        {flashcard.heading}
-                      </h2>
-                      <p className="text-white text-[13px] text-center">
-                        {flashcard.subheading || "Expand your knowledge!"}
-                      </p>
-                    </div>
-                    <div className="p-6 flex-grow">
-                      <p className="text-gray-700 text-center text-[13px] leading-relaxed mb-2">
-                        {flashcard.description}
-                      </p>
-                    </div>
+                <div>
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-lg p-6">
+                    <h2 className="text-[16px] font-medium text-white text-center mb-2">
+                      {flashcard.heading}
+                    </h2>
+                    <p className="text-white text-[13px] text-center">
+                      {flashcard.subheading || "Expand your knowledge!"}
+                    </p>
                   </div>
-                  <div className="p-6 -mt-12">
-                    <Dropdown
-                      value={getClassForFlashcard(flashcard)}
-                      onChange={(value) =>
-                        handleClassificationChange(flashcard.heading, value)
-                      }
-                      options={dropdownOptions}
-                    />
+                  <div className="p-6 flex-grow">
+                    <p className="text-gray-700 text-center text-[13px] leading-relaxed mb-2">
+                      {flashcard.description}
+                    </p>
                   </div>
+                </div>
+                <div className="p-6 -mt-12">
+                  <Dropdown
+                    value={getClassForFlashcard(flashcard)}
+                    onChange={(value) =>
+                      handleClassificationChange(flashcard.heading, value)
+                    }
+                    options={dropdownOptions}
+                  />
                 </div>
               </div>
             ))}
@@ -125,56 +91,35 @@ const FlashcardList = ({
           Important Cards
         </h2>
         {importantFlashcards.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {importantFlashcards.map((flashcard, index) => (
               <div
                 key={`${flashcard.heading}-${index}`}
-                className="mx-auto relative group  block mt-10 bg-white rounded-lg shadow-xl flex flex-col justify-between w-full h-full"
-                onMouseEnter={() => setImpCardHoverIndex(index)}
-                onMouseLeave={() => setImpCardHoverIndex(null)}
+                className="mx-auto mt-10 bg-white rounded-lg shadow-xl transform transition-all duration-500 hover:scale-105 flex flex-col justify-between h-full w-full"
               >
-                <AnimatePresence>
-                  {impCardHoverIndex === index && (
-                    <motion.span
-                      className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.1] block  rounded-3xl"
-                      layoutId="hoverBackground"
-                      initial={{ opacity: 1 }}
-                      animate={{
-                        opacity: 1,
-                        transition: { duration: 0.15 },
-                      }}
-                      exit={{
-                        opacity: 0,
-                        transition: { duration: 0.15, delay: 0.2 },
-                      }}
-                    />
-                  )}
-                </AnimatePresence>
-                <div className="card-section">
-                  <div>
-                    <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-lg p-6">
-                      <h2 className="text-[16px] font-medium text-white text-center mb-2">
-                        {flashcard.heading}
-                      </h2>
-                      <p className="text-white text-[13px] text-center">
-                        {flashcard.subheading || "Expand your knowledge!"}
-                      </p>
-                    </div>
-                    <div className="p-6 flex-grow">
-                      <p className="text-gray-700 text-center text-[13px] leading-relaxed mb-2">
-                        {flashcard.description}
-                      </p>
-                    </div>
+                <div>
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-lg p-6">
+                    <h2 className="text-[16px] font-medium text-white text-center mb-2">
+                      {flashcard.heading}
+                    </h2>
+                    <p className="text-white text-[13px] text-center">
+                      {flashcard.subheading || "Expand your knowledge!"}
+                    </p>
                   </div>
-                  <div className="pt-0 p-6 -mt-12">
-                    <Dropdown
-                      value={getClassForFlashcard(flashcard)}
-                      onChange={(value) =>
-                        handleClassificationChange(flashcard.heading, value)
-                      }
-                      options={dropdownOptions}
-                    />
+                  <div className="p-6 flex-grow">
+                    <p className="text-gray-700 text-center text-[13px] leading-relaxed mb-2">
+                      {flashcard.description}
+                    </p>
                   </div>
+                </div>
+                <div className="p-6 -mt-12">
+                  <Dropdown
+                    value={getClassForFlashcard(flashcard)}
+                    onChange={(value) =>
+                      handleClassificationChange(flashcard.heading, value)
+                    }
+                    options={dropdownOptions}
+                  />
                 </div>
               </div>
             ))}
